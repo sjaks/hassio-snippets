@@ -1,0 +1,39 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+input_boolean:
+  ac_toggle:
+    name: AC toggle
+
+switch:
+  platform: template
+  switches:
+    ac_toggle:
+      value_template: >
+        {{ is_state('input_boolean.ac_toggle', 'on') }}
+      turn_on:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.ac_toggle
+        - service: switch.turn_on
+          entity_id: switch.air_conditioner
+      turn_off:
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.ac_toggle
+        - service: switch.turn_on
+          entity_id: switch.air_conditioner
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24

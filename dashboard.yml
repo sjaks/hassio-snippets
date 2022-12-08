@@ -1,0 +1,147 @@
+type: vertical-stack
+cards:
+  - show_current: true
+    show_forecast: true
+    type: weather-forecast
+    entity: weather.supiluola
+    name: Weather
+  - square: false
+    columns: 2
+    type: grid
+    cards:
+      - type: tile
+        entity: light.living_room
+        show_entity_picture: false
+        features:
+          - type: light-brightness
+      - type: tile
+        entity: light.kitchen_2
+        show_entity_picture: false
+        icon_tap_action:
+          action: toggle
+        tap_action:
+          action: toggle
+        features:
+          - type: light-brightness
+      - type: tile
+        entity: light.bedroom
+        tap_action:
+          action: toggle
+        icon_tap_action:
+          action: toggle
+        features:
+          - type: light-brightness
+      - type: tile
+        entity: light.entrance
+        tap_action:
+          action: toggle
+        icon_tap_action:
+          action: toggle
+        features:
+          - type: light-brightness
+      - hours_to_show: 12
+        graph: line
+        type: sensor
+        entity: sensor.tasmota_thermometer_ds18b20_temperature
+        detail: 1
+        name: Indoors
+      - type: vertical-stack
+        cards:
+          - color: cyan
+            type: tile
+            entity: input_boolean.ac_toggle
+            icon: mdi:snowflake
+            name: Air conditioner
+            tap_action:
+              action: toggle
+            icon_tap_action:
+              action: toggle
+          - color: cyan
+            type: tile
+            entity: switch.tasmota_fan
+            icon: mdi:fan
+            name: Fan
+            icon_tap_action:
+              action: toggle
+            tap_action:
+              action: toggle
+      - type: vertical-stack
+        cards:
+          - color: teal
+            type: tile
+            entity: switch.tasmota_plants_entrance
+            show_entity_picture: false
+            name: Plant light
+            tap_action:
+              action: toggle
+            icon_tap_action:
+              action: toggle
+          - color: teal
+            type: tile
+            entity: switch.tasmota_plants_window
+            show_entity_picture: false
+            name: Plant light
+            tap_action:
+              action: toggle
+            icon_tap_action:
+              action: toggle
+          - color: teal
+            type: tile
+            entity: switch.tasmota_tree
+            name: Christmas tree
+            tap_action:
+              action: toggle
+            icon_tap_action:
+              action: toggle
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.living_room_default
+                icon: mdi:lightbulb-on-10
+                hold_action:
+                  action: toggle
+                icon_height: 58px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.living_room_nightlight
+                icon_height: 58px
+                icon: mdi:weather-night
+                hold_action:
+                  action: toggle
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.living_room_movie
+                icon_height: 58px
+                icon: mdi:movie-open-outline
+                hold_action:
+                  action: toggle
+          - color: blue-grey
+            type: tile
+            entity: light.tv
+            name: TV lights
+            icon: mdi:television
+            tap_action:
+              action: toggle
+            icon_tap_action:
+              action: toggle
+          - color: blue-grey
+            type: tile
+            entity: light.computer
+            name: PC lights
+            icon: mdi:desktop-classic
+            icon_tap_action:
+              action: toggle
+            tap_action:
+              action: toggle
