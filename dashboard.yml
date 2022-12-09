@@ -9,41 +9,49 @@ cards:
     columns: 2
     type: grid
     cards:
-      - type: tile
+      - features:
+          - type: light-brightness
+        type: tile
         entity: light.living_room
         show_entity_picture: false
-        features:
+        icon_tap_action:
+          action: toggle
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/living-room
+      - features:
           - type: light-brightness
-      - type: tile
+        type: tile
         entity: light.kitchen_2
         show_entity_picture: false
         icon_tap_action:
           action: toggle
         tap_action:
-          action: toggle
-        features:
+          action: navigate
+          navigation_path: /lovelace/kitchen
+      - features:
           - type: light-brightness
-      - type: tile
+        type: tile
         entity: light.bedroom
         tap_action:
-          action: toggle
+          action: navigate
+          navigation_path: /lovelace/bedroom
         icon_tap_action:
           action: toggle
-        features:
+      - features:
           - type: light-brightness
-      - type: tile
+        type: tile
         entity: light.entrance
         tap_action:
-          action: toggle
+          action: navigate
+          navigation_path: /lovelace/entrance
         icon_tap_action:
           action: toggle
-        features:
-          - type: light-brightness
       - hours_to_show: 12
         graph: line
         type: sensor
         entity: sensor.tasmota_thermometer_ds18b20_temperature
-        detail: 1
+        detail: 2
         name: Indoors
       - type: vertical-stack
         cards:
