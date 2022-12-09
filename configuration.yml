@@ -32,6 +32,17 @@ switch:
 
 frontend:
   themes: !include_dir_merge_named themes
+  
+sensor:
+  - platform: rest
+    resource: https://api.digitransit.fi/routing/v1/routers/waltti/index/graphql
+    method: POST
+    payload: '{"query": "{stop(id: \"tampere:0800\") {name, stoptimesWithoutPatterns(numberOfDepartures: 1) {serviceDay realtimeDeparture}}}"}'
+    name: Tram departure
+    value_template: '{{ (value_json.data.stop.stoptimesWithoutPatterns[0].serviceDay + value_json.data.stop.stoptimesWithoutPatterns[0].realtimeDeparture - as_timestamp(now())) | multiply(0.0166) | int }}'
+    unit_of_measurement: min
+    headers:
+      Content-Type: application/json
 
 http:
   use_x_forwarded_for: true
