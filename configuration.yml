@@ -5,45 +5,42 @@ default_config:
 tts:
   - platform: google_translate
 
+# Include subfiles
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-input_boolean:
-  ac_toggle:
-    name: AC toggle
+# Enable discovery of bluetooth adapters
+bluetooth:
 
-switch:
-  platform: template
-  switches:
-    ac_toggle:
-      value_template: >
-        {{ is_state('input_boolean.ac_toggle', 'on') }}
-      turn_on:
-        - service: input_boolean.turn_on
-          entity_id: input_boolean.ac_toggle
-        - service: switch.turn_on
-          entity_id: switch.air_conditioner
-      turn_off:
-        - service: input_boolean.turn_off
-          entity_id: input_boolean.ac_toggle
-        - service: switch.turn_on
-          entity_id: switch.air_conditioner
-
-frontend:
-  themes: !include_dir_merge_named themes
-  
+# Define custom sensors
 sensor:
   - platform: rest
+    # Get tram departure times from Waltti
     resource: https://api.digitransit.fi/routing/v1/routers/waltti/index/graphql
     method: POST
+    # Request the next tram for stop id 0800
     payload: '{"query": "{stop(id: \"tampere:0800\") {name, stoptimesWithoutPatterns(numberOfDepartures: 1) {serviceDay realtimeDeparture}}}"}'
     name: Tram departure
     value_template: '{{ (value_json.data.stop.stoptimesWithoutPatterns[0].serviceDay + value_json.data.stop.stoptimesWithoutPatterns[0].realtimeDeparture - as_timestamp(now())) | multiply(0.0166) | int }}'
     unit_of_measurement: min
     headers:
       Content-Type: application/json
+  - platform: template
+    sensors:
+      indoors_pressure_difference:
+        friendly_name: Indoors pressure difference
+        value_template: "{{ (states('sensor.outdoors_ruuvitag_pressure') | float - states('sensor.living_room_temperature_pressure') | float ) }}"
+        unit_of_measurement: hPa
 
+# Define small themes for small tweaks
+frontend:
+  themes:
+    # Pink theme for sensor graphs
+    th_sensor_temp:
+        accent-color: "#e91e63"
+
+# Needed for tunneling traffic
 http:
   use_x_forwarded_for: true
   trusted_proxies:
