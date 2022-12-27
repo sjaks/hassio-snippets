@@ -1,14 +1,70 @@
 type: vertical-stack
 cards:
-  - show_current: true
-    show_forecast: true
-    type: weather-forecast
-    entity: weather.supiluola
-    name: Weather
+  - type: markdown
+    content: |-
+      <center>
+      <img height=40 src="https://sjaks.iki.fi/assets/icons/supiluola_text.png">
+      </center>
   - square: false
     columns: 2
     type: grid
     cards:
+      - hours_to_show: 24
+        graph: line
+        type: sensor
+        entity: sensor.indoors_temperature_mean
+        detail: 2
+        icon: 'null'
+        name: Sisälämpötila
+        theme: th_sensor_temp
+      - hours_to_show: 24
+        graph: line
+        type: sensor
+        entity: sensor.outdoors_ruuvitag_temperature
+        detail: 2
+        name: Ulkolämpötila
+        icon: 'null'
+        theme: th_sensor_temp
+      - type: tile
+        entity: weather.supiluola
+        name: Säätila
+        color: pink
+        show_entity_picture: true
+        icon_tap_action:
+          action: none
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/ac
+      - type: tile
+        entity: sensor.living_room_temperature_humidity
+        name: Ilmankosteus
+        icon: mdi:water-outline
+        color: pink
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/ac
+        icon_tap_action:
+          action: none
+      - color: pink
+        type: tile
+        entity: input_boolean.air_conditioner
+        icon: ''
+        name: Ilmastointi
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/ac
+        icon_tap_action:
+          action: toggle
+      - color: pink
+        type: tile
+        entity: switch.tasmota_fan
+        icon: mdi:fan
+        name: Tuuletin
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/ac
+        icon_tap_action:
+          action: toggle
       - features:
           - type: light-brightness
         type: tile
@@ -19,16 +75,22 @@ cards:
         tap_action:
           action: navigate
           navigation_path: /lovelace/living-room
+        name: Olohuone
+        icon: mdi:sofa-outline
+        color: pink
       - features:
           - type: light-brightness
         type: tile
-        entity: light.kitchen_2
+        entity: light.kitchen
         show_entity_picture: false
         icon_tap_action:
           action: toggle
         tap_action:
           action: navigate
           navigation_path: /lovelace/kitchen
+        name: Keittiö
+        icon: mdi:silverware-fork-knife
+        color: pink
       - features:
           - type: light-brightness
         type: tile
@@ -38,6 +100,9 @@ cards:
           navigation_path: /lovelace/bedroom
         icon_tap_action:
           action: toggle
+        name: Makuuhuone
+        icon: mdi:bed-double-outline
+        color: pink
       - features:
           - type: light-brightness
         type: tile
@@ -47,109 +112,44 @@ cards:
           navigation_path: /lovelace/entrance
         icon_tap_action:
           action: toggle
-      - hours_to_show: 12
-        graph: line
-        type: sensor
-        entity: sensor.tasmota_thermometer_ds18b20_temperature
-        detail: 2
-        name: Indoors
+        name: Eteinen
+        icon: mdi:door
+        color: pink
+      - color: pink
+        type: tile
+        entity: switch.tasmota_plants_002
+        show_entity_picture: false
+        tap_action:
+          action: none
+        icon_tap_action:
+          action: toggle
+        name: Kasvilamppu
+      - color: pink
+        type: tile
+        entity: switch.tasmota_decor
+        tap_action:
+          action: none
+        icon_tap_action:
+          action: toggle
+        name: Koristevalot
+      - color: pink
+        type: tile
+        entity: switch.tasmota_plants_001
+        show_entity_picture: false
+        tap_action:
+          action: none
+        icon_tap_action:
+          action: toggle
+        name: Kasvilamppu
       - type: vertical-stack
         cards:
-          - color: cyan
-            type: tile
-            entity: input_boolean.ac_toggle
-            icon: mdi:snowflake
-            name: Air conditioner
-            tap_action:
-              action: toggle
-            icon_tap_action:
-              action: toggle
-          - color: cyan
-            type: tile
-            entity: switch.tasmota_fan
-            icon: mdi:fan
-            name: Fan
-            icon_tap_action:
-              action: toggle
-            tap_action:
-              action: toggle
-      - type: vertical-stack
-        cards:
-          - color: teal
-            type: tile
-            entity: switch.tasmota_plants_entrance
+          - type: tile
+            entity: sensor.tram_departure
+            icon: mdi:tram
+            color: pink
             show_entity_picture: false
-            name: Plant light
             tap_action:
-              action: toggle
+              action: none
             icon_tap_action:
-              action: toggle
-          - color: teal
-            type: tile
-            entity: switch.tasmota_plants_window
-            show_entity_picture: false
-            name: Plant light
-            tap_action:
-              action: toggle
-            icon_tap_action:
-              action: toggle
-          - color: teal
-            type: tile
-            entity: switch.tasmota_tree
-            name: Christmas tree
-            tap_action:
-              action: toggle
-            icon_tap_action:
-              action: toggle
-      - type: vertical-stack
-        cards:
-          - type: horizontal-stack
-            cards:
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.living_room_default
-                icon: mdi:lightbulb-on-10
-                hold_action:
-                  action: toggle
-                icon_height: 58px
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.living_room_nightlight
-                icon_height: 58px
-                icon: mdi:weather-night
-                hold_action:
-                  action: toggle
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.living_room_movie
-                icon_height: 58px
-                icon: mdi:movie-open-outline
-                hold_action:
-                  action: toggle
-          - color: blue-grey
-            type: tile
-            entity: light.tv
-            name: TV lights
-            icon: mdi:television
-            tap_action:
-              action: toggle
-            icon_tap_action:
-              action: toggle
-          - color: blue-grey
-            type: tile
-            entity: light.computer
-            name: PC lights
-            icon: mdi:desktop-classic
-            icon_tap_action:
-              action: toggle
-            tap_action:
-              action: toggle
+              action: none
+            name: Raitiovaunu
