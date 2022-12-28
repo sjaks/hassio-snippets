@@ -20,6 +20,7 @@ sensor:
     resource: https://api.digitransit.fi/routing/v1/routers/waltti/index/graphql
     method: POST
     # Request the next tram for stop id 0800
+    # Get the stop code from https://www.nysse.fi/aikataulut-ja-reitit.html?state=/en/lines
     payload: '{"query": "{stop(id: \"tampere:0800\") {name, stoptimesWithoutPatterns(numberOfDepartures: 1) {serviceDay realtimeDeparture}}}"}'
     name: Tram departure
     value_template: '{{ (value_json.data.stop.stoptimesWithoutPatterns[0].serviceDay + value_json.data.stop.stoptimesWithoutPatterns[0].realtimeDeparture - as_timestamp(now())) | multiply(0.0166) | int }}'
